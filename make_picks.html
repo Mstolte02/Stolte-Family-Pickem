@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ user.name }}'s Picks</title>
+</head>
+<body>
+  <h1>{{ user.name }}'s NFL Picks</h1>
+  <form method="POST">
+    {% for game, form in forms %}
+      <div style="margin-bottom: 20px;">
+        <b>Week {{ game.week }}</b>: 
+        <img src="{{ teams[game.away_team].logo_url }}" width="40"> {{ game.away_team }} 
+        at 
+        <img src="{{ teams[game.home_team].logo_url }}" width="40"> {{ game.home_team }}
+        <br><br>
+        {{ form.hidden_tag() }}
+        {{ form.pick.label }} {{ form.pick() }}
+      </div>
+    {% endfor %}
+    <button type="submit">Submit All Picks</button>
+  </form>
+</body>
+</html>

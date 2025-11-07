@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Leaderboard</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 60%;
+            margin: auto;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f3f3f3;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="text-align:center;">🏈 Family Pick-Em Leaderboard 🏈</h1>
+
+    <!-- 🟢 Move dropdown inside the body and above the table -->
+    <form method="GET" action="/leaderboard" style="text-align:center; margin-bottom:20px;">
+        <label for="week">Select Week:</label>
+        <select name="week" id="week" onchange="this.form.submit()">
+            <option value="">Full Season</option>
+            {% for w in weeks %}
+            <option value="{{ w }}" {% if selected_week==w %}selected{% endif %}>Week {{ w }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Wins</th>
+            <th>Losses</th>
+            <th>Win %</th>
+        </tr>
+        {% for s in standings %}
+        <tr>
+            <td>{{ s.name }}</td>
+            <td>{{ s.wins }}</td>
+            <td>{{ s.losses }}</td>
+            <td>{{ s.pct }}%</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>

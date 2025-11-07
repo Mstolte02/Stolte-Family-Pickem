@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>All Picks</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 6px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f3f3f3;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="text-align:center;">Family Pick-Em – All Picks</h1>
+
+    <!-- ✅ Move dropdown INSIDE the body and above the table -->
+    <form method="GET" action="/all_picks" style="text-align:center; margin-bottom:20px;">
+        <label for="week">Select Week:</label>
+        <select name="week" id="week" onchange="this.form.submit()">
+            <option value="">All Weeks</option>
+            {% for w in weeks %}
+            <option value="{{ w }}" {% if selected_week==w %}selected{% endif %}>Week {{ w }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Game</th>
+                {% for user in users %}
+                <th>{{ user.name }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for game in games %}
+            <tr>
+                <td>{{ game.away_team }} at {{ game.home_team }}</td>
+                {% for user in users %}
+                {% set pick = pick_lookup.get((user.id, game.id)) %}
+                <td>{{ pick if pick else "-" }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+
+</html>

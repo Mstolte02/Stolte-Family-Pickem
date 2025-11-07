@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>NFL Games</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f3f3f3;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🏈 NFL Schedule 🏈</h1>
+
+    <!-- Week Filter Dropdown -->
+    <form method="GET" action="/games">
+        <label for="week">Select Week:</label>
+        <select name="week" id="week" onchange="this.form.submit()">
+            <option value="">All Weeks</option>
+            {% for w in weeks %}
+            <option value="{{ w }}" {% if selected_week==w %}selected{% endif %}>
+                Week {{ w }}
+            </option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <table>
+        <tr>
+            <th>Week</th>
+            <th>Matchup</th>
+        </tr>
+        {% for game in games %}
+        {% set away = teams.get(game.away_team) %}
+        {% set home = teams.get(game.home_team) %}
+        <tr>
+            <td>{{ game.week }}</td>
+            <td>
+                <div style="display:flex;align-items:center;gap:10px;justify-content:center;">
+                    {% if away %}
+                    <img src="{{ away.logo_url }}" width="40"> <strong>{{ away.abbreviation }}</strong>
+                    {% else %}
+                    {{ game.away_team }}
+                    {% endif %}
+                    <span>at</span>
+                    {% if home %}
+                    <img src="{{ home.logo_url }}" width="40"> <strong>{{ home.abbreviation }}</strong>
+                    {% else %}
+                    {{ game.home_team }}
+                    {% endif %}
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>
